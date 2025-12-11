@@ -1,0 +1,855 @@
+/* ==========================================================================
+   SHARED STYLESHEET FOR DAISYSYETE PROJECT
+   ========================================================================== */
+
+/* --------- TAILWIND & CUSTOM VARIABLES --------- */
+:root {
+  --color-dark-blue: #143D5C;
+  --color-medium-blue: #235882;
+  --color-light-blue-bg: #F8FAFF;
+  --color-light-blue-fill: #E5F0FF;
+  --color-green-success: #70E090;
+  --color-progress-bar: #2B6CB0;
+  --primary-dark: #163973;
+  --brand-blue: #2563EB;
+  --dark-gray: #374151;
+  --light-bg: #F9FAFB;
+}
+
+/* --------- COMMON STYLES --------- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  color: #374151;
+  background-color: #f9fafb;
+  margin: 0;
+  padding: 0;
+}
+
+/* --------- HEADER & NAVIGATION --------- */
+.header-bg {
+  background-color: #163973;
+}
+
+.nav-link {
+  transition: all 0.15s duration;
+}
+
+.nav-link.active {
+  border-bottom: 2px solid white;
+  padding-bottom: 4px;
+}
+
+.nav-link:hover {
+  color: #93c5fd;
+  transition: color 0.15s;
+}
+
+/* --------- BURGER MENU STYLES --------- */
+.burger-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+  z-index: 51;
+}
+
+.burger-btn:hover {
+  opacity: 0.8;
+}
+
+.burger-btn.active {
+  opacity: 1;
+}
+
+.burger-line {
+  width: 24px;
+  height: 2px;
+  background-color: white;
+  margin: 4px 0;
+  transition: all 0.4s ease;
+  transform-origin: center;
+}
+
+.burger-btn.active .burger-line:nth-child(1) {
+  transform: translateY(10px) rotate(45deg);
+}
+
+.burger-btn.active .burger-line:nth-child(2) {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.burger-btn.active .burger-line:nth-child(3) {
+  transform: translateY(-10px) rotate(-45deg);
+}
+
+/* Mobile Menu - Half Vertical Overlay */
+#mobileNav {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  width: 50%;
+  height: calc(100vh - 64px);
+  background-color: #163973;
+  z-index: 50;
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+#mobileNav.active {
+  transform: translateX(0);
+}
+
+#mobileNav a {
+  display: block;
+  padding: 16px 24px;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.05em;
+  border-bottom: none;
+  transition: all 0.3s ease;
+  position: relative;
+  width: fit-content;
+}
+
+#mobileNav a::before {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  left: 24px;
+  width: 0;
+  height: 2px;
+  background-color: white;
+  transition: width 0.4s ease;
+}
+
+#mobileNav a:hover::before,
+#mobileNav a.active::before {
+  width: 100%;
+}
+
+#mobileNav a:hover {
+  color: white;
+}
+
+/* --------- SECTION PADDING --------- */
+.section-padding {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .section-padding {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    padding-left: 8rem;
+    padding-right: 8rem;
+  }
+}
+
+/* --------- HERO ILLUSTRATION --------- */
+.hero-illustration {
+  width: 100%;
+  max-width: 300px;
+}
+
+@media (min-width: 1024px) {
+  .hero-illustration {
+    max-width: 450px;
+  }
+}
+
+/* --------- FAQ STYLES --------- */
+.faq-icon {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.faq-item {
+  background-color: white;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.faq-item.active {
+  background-color: #eff6ff;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.faq-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-top-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border-top: 1px solid transparent;
+  padding: 0 1rem;
+  opacity: 0;
+  will-change: max-height, opacity;
+}
+
+.faq-item.active .faq-content {
+  border-top-color: #c9d6ea;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  opacity: 1;
+  overflow: visible;
+}
+
+.faq-item.active .faq-toggle .faq-icon {
+  transform: rotate(45deg);
+}
+
+.faq-item.initial-active .faq-content {
+  max-height: none !important;
+  border-top-color: #c9d6ea !important;
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+  opacity: 1 !important;
+  overflow: visible !important;
+}
+
+/* --------- FOOTER --------- */
+.footer-container {
+  background-color: #163973;
+  color: white;
+  position: relative;
+}
+
+.footer-logo-area {
+  padding-top: 20px;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 10;
+}
+
+.footer-container::before {
+  content: none !important;
+}
+
+@media (max-width: 767px) {
+  .footer-container::before {
+    display: none;
+  }
+
+  .footer-logo-area {
+    margin-bottom: 0;
+  }
+}
+
+/* --------- HOW IT WORKS STEPS --------- */
+.step-number {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #163973;
+  margin-bottom: 0.5rem;
+}
+
+.how-it-works-line {
+  position: absolute;
+  top: 65px;
+  width: 80%;
+  height: 2px;
+  background-color: #d1d5db;
+  z-index: 0;
+  left: 10%;
+}
+
+.step-connector {
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 9999px;
+  background-color: #163973;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+/* --------- SURVEY STYLES --------- */
+.progress-bar {
+  transition: width 0.3s ease-in-out;
+  background-color: var(--color-progress-bar);
+}
+
+.form-section {
+  border: 1px solid #cce5ff;
+  background-color: var(--color-light-blue-bg);
+}
+
+.form-header {
+  background-color: var(--color-dark-blue);
+}
+
+.submit-btn {
+  background-color: var(--color-dark-blue);
+  transition: opacity 0.3s;
+}
+
+.submit-btn:hover {
+  opacity: 0.9;
+}
+
+.go-back-btn-fill {
+  background-color: var(--color-light-blue-fill);
+  color: var(--color-dark-blue);
+  transition: opacity 0.3s;
+}
+
+.go-back-btn-fill:hover {
+  opacity: 0.9;
+}
+
+.success-btn {
+  background-color: var(--color-green-success);
+  color: var(--color-dark-blue);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s;
+}
+
+.success-btn:hover {
+  opacity: 0.9;
+}
+
+.mood-icon {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--color-dark-blue);
+}
+
+.mood-icon.selected {
+  border-color: var(--color-dark-blue);
+  background-color: var(--color-light-blue-fill);
+}
+
+/* Modal backdrop styles */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: none;
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  max-width: 500px;
+  width: 90%;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--color-dark-blue);
+}
+
+.modal-close-x {
+  color: var(--color-dark-blue);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.modal-close-x:hover {
+  color: #374151;
+}
+
+/* Body style to gray out content behind the initial modal */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* Style for disabling CC2/CC3 inputs when CC1=4 */
+#form-2 .disabled-cc label {
+  color: #9ca3af;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+#form-2 .disabled-cc input[type="radio"] {
+  opacity: 0.6;
+}
+
+/* --------- HOW IT WORKS PAGE --------- */
+.detailed-step {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+/* --------- HELP PAGE --------- */
+.faq-toggle {
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.faq-toggle:hover {
+  background-color: #f3f4f6;
+}
+
+.faq-item.active .faq-toggle:hover {
+  background-color: #eff6ff;
+}
+
+.contact-box {
+  background-color: #f0f4ff;
+}
+
+
+
+/* --------- RESPONSIVE UTILITIES --------- */
+@media (max-width: 767px) {
+  .hidden-mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .hidden-desktop {
+    display: none !important;
+  }
+}
+
+/* ========================================================================== */
+/* GLOBAL ANIMATIONS & TRANSITIONS */
+/* ========================================================================== */
+
+/* --------- KEYFRAME ANIMATIONS --------- */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(22, 57, 115, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(22, 57, 115, 0.6);
+  }
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+@keyframes progressGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(43, 108, 176, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(43, 108, 176, 0.8);
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* --------- HEADER ANIMATIONS --------- */
+header {
+  animation: slideDown 0.6s ease-out;
+}
+
+header.sticky {
+  animation: slideDown 0.3s ease-out;
+}
+
+/* --------- NAVIGATION ANIMATIONS --------- */
+nav {
+  animation: fadeIn 0.8s ease-out 0.2s both;
+}
+
+.nav-link {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 4px;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: white;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* --------- BUTTON ANIMATIONS --------- */
+button,
+.submit-btn,
+.go-back-btn-fill,
+.success-btn,
+a.rounded-full {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+button:active,
+.submit-btn:active,
+.go-back-btn-fill:active,
+.success-btn:active {
+  transform: scale(0.98);
+}
+
+/* --------- FORM INPUT ANIMATIONS --------- */
+input,
+select,
+textarea {
+  transition: all 0.3s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(22, 57, 115, 0.1);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="date"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+  border-color: #163973;
+  transform: scale(1.01);
+}
+
+/* --------- FAQ ANIMATIONS --------- */
+.faq-item {
+  animation: slideUp 0.6s ease-out;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.faq-toggle {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.faq-toggle:hover {
+  background-color: #f3f4f6;
+  color: #163973;
+}
+
+.faq-item.active .faq-toggle {
+  background-color: #eff6ff;
+}
+
+.faq-icon {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.faq-item.active .faq-icon {
+  animation: rotate 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* --------- CARD ANIMATIONS --------- */
+.detailed-step,
+.p-6 {
+  animation: slideUp 0.6s ease-out;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.detailed-step:hover,
+.p-6:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* --------- MODAL ANIMATIONS --------- */
+.modal-backdrop {
+  animation: fadeIn 0.4s ease-out;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* --------- MOOD ICON ANIMATIONS --------- */
+.mood-icon {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: fadeIn 0.4s ease-out;
+}
+
+.mood-icon:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(22, 57, 115, 0.2);
+}
+
+.mood-icon.selected {
+  animation: pulse 0.6s ease-in-out;
+}
+
+/* --------- PROGRESS BAR ANIMATIONS --------- */
+#progress-bar {
+  animation: progressGlow 2s ease-in-out infinite;
+  border-radius: 9999px;
+}
+
+/* --------- FOOTER ANIMATIONS --------- */
+footer {
+  animation: slideUp 0.8s ease-out 0.4s both;
+}
+
+footer a {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+footer a::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #ffffff;
+  transition: width 0.3s ease;
+}
+
+footer a:hover::before {
+  width: 100%;
+}
+
+/* --------- SECTION ANIMATIONS --------- */
+section {
+  animation: fadeIn 0.6s ease-out;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  animation: slideUp 0.6s ease-out;
+}
+
+p {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* --------- IMAGE ANIMATIONS --------- */
+img {
+  transition: all 0.4s ease;
+}
+
+img:hover {
+  transform: scale(1.02);
+}
+
+/* --------- TEXT INPUT LABEL EFFECT --------- */
+.form-section label {
+  transition: all 0.3s ease;
+}
+
+.form-section label:hover {
+  color: #163973;
+}
+
+/* --------- RESPONSIVE ANIMATIONS --------- */
+@media (max-width: 768px) {
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  button,
+  .submit-btn,
+  .go-back-btn-fill {
+    transform: scale(1);
+  }
+
+  button:active,
+  .submit-btn:active,
+  .go-back-btn-fill:active {
+    transform: scale(0.95);
+  }
+}
+
+/* --------- ACCESSIBILITY: RESPECT PREFERS-REDUCED-MOTION --------- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+

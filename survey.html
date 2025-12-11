@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valenzuela City Client Satisfaction Survey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+
+    <div id="survey-container" class="max-w-3xl mx-auto py-4 px-2 sm:px-4 md:py-8 md:px-6">
+
+        <div id="survey-header" class="hidden sticky top-0 bg-gray-100 z-10 pt-2 pb-4">
+            <div class="flex items-center justify-between text-sm mb-2 text-gray-700">
+                <a href="#" id="back-button" class="flex items-center text-lg text-gray-700 font-semibold hover:text-blue-700">
+                    <svg class="w-6 h-6 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    Back
+                </a>
+                <a href="#" id="next-button" class="hidden flex items-center text-lg text-gray-700 font-semibold hover:text-blue-700">
+                    Next
+                    <svg class="w-6 h-6 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </a>
+            </div>
+            <div class="h-2 bg-gray-300 rounded-full">
+                <div id="progress-bar" class="progress-bar h-2 rounded-full" style="width: 0%;"></div>
+            </div>
+            <div id="progress-text" class="text-right text-sm mt-1 text-gray-700">0% Complete</div>
+        </div>
+
+        <form id="form-1" class="hidden survey-form">
+            <a href="#" id="form1-home-link" class="flex items-center text-lg font-semibold mb-6 text-gray-700 hover:text-blue-700">
+                <svg class="w-6 h-6 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                Go Back
+            </a>
+            <div class="text-center mb-8">
+                <div class="mx-auto w-24 h-24 mb-4">
+                    <div class="w-full h-full rounded-full flex items-center justify-center text-sm font-bold text-gray-800">
+                        <img src="User View/Survey/surveylogo.png" alt="">
+                    </div>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-800" style="color: var(--color-dark-blue);">CITY GOVERNMENT OF VALENZUELA</h1>
+                <p class="text-sm text-gray-600">HELP US SERVE YOU BETTER!</p>
+                <p class="mt-4 text-sm text-gray-500 max-w-lg mx-auto">This Client Satisfaction Measurement (CSM) tracks the customer experience of government offices. Your feedback on your **recently concluded transaction** will help this office provide a better service. Personal information shared will be kept confidential and you always have the option to not answer this form.</p>
+                <a href="#" id="see-privacy-notice-link" class="text-blue-700 text-sm mt-2 inline-block font-semibold" onclick="showModal('data-privacy-modal'); return false;">See Data Privacy Notice</a>
+                <div class="border-t border-gray-300 mt-4"></div>
+            </div>
+
+            <div class="form-header text-white p-4 rounded-t-lg flex items-center">
+                <div class="w-8 h-8 rounded-full bg-white mr-3 flex items-center justify-center">
+                    <img src="User View/Survey/info page icon.png" alt="">
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold">CLIENT INFORMATION</h2>
+                    <p class="text-xs font-light">kindly fill in the required information bellow</p>
+                </div>
+            </div>
+
+            <div class="form-section p-6 rounded-b-lg space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="block">
+                        <span class="text-gray-700">Client Type <span class="text-red-500">*</span></span>
+                        <select name="clientType" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" required>
+                            <option value="" disabled selected>Select Client Type</option>
+                            <option value="citizen">Citizen</option>
+                            <option value="business">Business</option>
+                            <option value="government">Government</option>
+                        </select>
+                        <p id="clientType-error" class="text-red-500 text-xs mt-1 hidden"></p>
+                    </label>
+                    <label class="block">
+                        <span class="text-gray-700">Date <span class="text-red-500">*</span></span>
+                        <input type="date" name="date" value="2025-10-12" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" required>
+                        <p id="date-error" class="text-red-500 text-xs mt-1 hidden"></p>
+                    </label>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="block">
+                        <span class="text-gray-700">Age <span class="text-red-500">*</span></span>
+                        <input type="number" name="age" id="age-input" placeholder="enter your age" min="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" required>
+                        <p id="age-error" class="text-red-500 text-xs mt-1 hidden">Age must be a whole number (integer).</p>
+                    </label>
+                    <label class="block">
+                        <span class="text-gray-700">Service Availed <span class="text-red-500">*</span></span>
+                        <input type="text" name="serviceAvailed" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" required>
+                        <p id="serviceAvailed-error" class="text-red-500 text-xs mt-1 hidden"></p>
+                    </label>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="block">
+                        <span class="text-gray-700">Region of Residence <span class="text-red-500">*</span></span>
+                        <input type="text" name="regionOfResidence" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" required>
+                        <p id="regionOfResidence-error" class="text-red-500 text-xs mt-1 hidden"></p>
+                    </label>
+                    <div class="block">
+                        <span class="text-gray-700">Sex <span class="text-red-500">*</span></span>
+                        <div class="mt-2 space-x-4 flex">
+                            <label class="inline-flex items-center"><input type="radio" name="sex" value="Male" required class="form-radio text-blue-600"><span class="ml-2">Male</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="sex" value="Female" class="form-radio text-blue-600"><span class="ml-2">Female</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="sex" value="Others" class="form-radio text-blue-600"><span class="ml-2">Others</span></label>
+                        </div>
+                        <p id="sex-error" class="text-red-500 text-xs mt-1 hidden"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <button type="button" onclick="validateForm(1)" class="submit-btn text-white font-bold py-3 px-12 rounded-lg hover:opacity-90 transition duration-300">NEXT</button>
+            </div>
+        </form>
+
+        <form id="form-2" class="hidden survey-form">
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">Citizen's Charter Survey</h1>
+            
+            <div class="form-header text-white p-4 rounded-lg flex items-start mb-6">
+                <div class="w-12 h-10 rounded-full bg-white mr-3 flex items-center justify-center">
+                    <img src="User View/Survey/ccs page icon.png" alt="Citizen's Charter Icon" class="w-12 h-10 object-contain">
+                </div>
+                <div class="text-sm font-light leading-snug">
+                    <p class="font-bold">INSTRUCTIONS:</p>
+                    <p>Please place a Check mark $(\checkmark)$ in the designated box that corresponds to your answer. The Citizen Charter is an official document that reflects the services of a government agency/office including its requirements, fees, and processing times among others.</p>
+                </div>
+            </div>
+
+            <div id="cc-questions-container" class="space-y-6">
+                <div class="form-section p-5 rounded-lg">
+                    <label class="block text-lg font-semibold mb-3">CC1. Which of the following best describes your awareness of a CC? <span class="text-red-500">*</span></label>
+                    <div class="space-y-2 text-sm">
+                        <label class="flex items-center"><input type="radio" name="cc1" value="1" id="cc1-aware-saw" required class="form-radio text-blue-600 cc1-input" onchange="handleCC1Change(this.value)"><span class="ml-2">I know what a CC is and I saw this office's CC</span></label>
+                        <label class="flex items-center"><input type="radio" name="cc1" value="2" id="cc1-aware-not-saw" class="form-radio text-blue-600 cc1-input" onchange="handleCC1Change(this.value)"><span class="ml-2">I know what a CC is but did NOT see this office's CC</span></label>
+                        <label class="flex items-center"><input type="radio" name="cc1" value="3" id="cc1-learned-saw" class="form-radio text-blue-600 cc1-input" onchange="handleCC1Change(this.value)"><span class="ml-2">I learned of the CC only when I saw this office's CC</span></label>
+                        <label class="flex items-center"><input type="radio" name="cc1" value="4" id="cc1-unaware-not-saw" class="form-radio text-blue-600 cc1-input" onchange="handleCC1Change(this.value)"><span class="ml-2">I do not know what a CC is and did not see one in this office.</span></label>
+                        <p class="text-xs ml-6 italic text-gray-500">(Answer N/A on CC2 and CC3)</p>
+                    </div>
+                    <p id="cc1-error" class="text-red-500 text-xs mt-3 hidden"></p>
+                </div>
+
+                <div class="form-section p-5 rounded-lg">
+                    <label class="block text-lg font-semibold mb-3">CC2. If aware of the CC (answered 1–3 in CC1), would you say that the CC of this office was...? <span class="text-red-500">*</span></label>
+                    <div class="space-y-2 text-sm">
+                        <label class="flex items-center"><input type="radio" name="cc2" value="Easy to see" id="cc2-easy" required class="form-radio text-blue-600"><span class="ml-2">Easy to see</span></label>
+                        <label class="flex items-center"><input type="radio" name="cc2" value="Somewhat easy to see" id="cc2-somewhat-easy" class="form-radio text-blue-600"><span class="ml-2">Somewhat easy to see</span></label>
+                        <label class="flex items-center"><input type="radio" name="cc2" value="Difficult to see" id="cc2-difficult" class="form-radio text-blue-600"><span class="ml-2">Difficult to see</span></label>
+                        <label class="flex items-center"><input type="radio" name="cc2" value="Not visible at all" id="cc2-not-visible" class="form-radio text-blue-600"><span class="ml-2">Not visible at all</span></label>
+                        <label class="flex items-center"><input type="radio" name="cc2" value="Not Applicable" id="cc2-na" class="form-radio text-blue-600"><span class="ml-2">Not Applicable</span></label>
+                    </div>
+                    <p id="cc2-error" class="text-red-500 text-xs mt-3 hidden"></p>
+                </div>
+
+                <div class="form-section p-5 rounded-lg">
+                    <label class="block text-lg font-semibold mb-3">CC3. If aware of the CC (answered 1–3 in CC1), would you say that the CC of this office was...? <span class="text-red-500">*</span></label>
+                    <div class="space-y-2 text-sm">
+                        <label class="flex items-center"><input type="radio" name="cc3" value="Helped very much" id="cc3-very-much" required class="form-radio text-blue-600"><span class="ml-2">Helped very much</span></label>
+                        <label class="flex items-center"><input type="radio" name="cc3" value="Somewhat helped" id="cc3-somewhat" class="form-radio text-blue-600"><span class="ml-2">Somewhat helped</span></label>
+                        <label class="flex items-center"><input type="radio" name="cc3" value="Did not help" id="cc3-did-not-help" class="form-radio text-blue-600"><span class="ml-2">Did not help</span></label>
+                        <label class="flex items-center"><input type="radio" name="cc3" value="Not Applicable" id="cc3-na" class="form-radio text-blue-600"><span class="ml-2">Not Applicable</span></label>
+                    </div>
+                    <p id="cc3-error" class="text-red-500 text-xs mt-3 hidden"></p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-8">
+                <button type="button" onclick="validateForm(2)" class="submit-btn text-white font-bold py-3 px-12 rounded-lg hover:opacity-90 transition duration-300">NEXT</button>
+            </div>
+        </form>
+
+        <form id="form-3" class="hidden survey-form">
+            <div class="form-header text-white p-4 rounded-lg flex items-start mb-6">
+                <div class="w-8 h-8 rounded-full bg-white mr-3 flex items-center justify-center">
+                    <div class="text-xl" style="color: var(--color-medium-blue);">
+                        <img src="User View/Survey/sqd page icon.png" alt="">
+                    </div> 
+                </div>
+                <div class="text-sm font-light leading-snug">
+                    <h2 class="text-base font-bold mb-1">INSTRUCTIONS:</h2>
+                    <p>For questions SQD 0–8, please select the button that best represents your answer with each statement. Choose one option only for each question.</p>
+                </div>
+            </div>
+
+            <div id="sqd-questions-container" class="space-y-4">
+                </div>
+
+            <div class="text-center mt-8">
+                <button type="button" onclick="validateForm(3)" class="submit-btn text-white font-bold py-3 px-12 rounded-lg hover:opacity-90 transition duration-300">NEXT</button>
+            </div>
+        </form>
+
+        <form id="form-4" class="hidden survey-form">
+            <div class="form-header text-white p-4 rounded-lg flex items-center mb-6">
+                <div class="w-8 h-8 rounded-full bg-white mr-3 flex items-center justify-center">
+                    <div class="text-xl" style="color: var(--color-medium-blue);">
+                        <img src="User View/Survey/suggestion page icon.png" alt="">
+                    </div>
+                </div>
+                <h2 class="text-xl font-bold">Tell us what you think – your opinion matters! (Optional)</h2>
+            </div>
+            
+            <div class="form-section p-6 rounded-lg mb-8 space-y-4">
+                <label class="block">
+                    <span class="text-gray-700">Suggestions on how we can further improve our services (optional):</span>
+                    <textarea name="suggestions" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"></textarea>
+                    <p id="suggestions-error" class="text-red-500 text-xs mt-1 hidden"></p>
+                </label>
+                <label class="block">
+                    <span class="text-gray-700">Email Address(optional):</span>
+                    <input type="email" name="email" id="email-input" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                    <p id="email-error" class="text-red-500 text-xs mt-1 hidden"></p>
+                </label>
+            </div>
+
+            <div class="p-4 rounded-lg border-2 border-blue-400" style="background-color: #f7fcff; border-color: #cce5ff; font-size: 0.9rem;">
+                Note: By clicking "Submit Survey", you acknowledge that all the information provided is accurate and you consent to the processing of your data as outlined in our Data Privacy Notice.
+            </div>
+
+            <p class="text-sm text-gray-600 italic mt-6 mb-6">Please review your answers using the "Back" button if needed, then click "Submit Survey" to complete your feedback submission.</p>
+
+            <div class="text-center">
+                <button type="button" onclick="validateForm(4)" class="submit-btn text-white font-bold py-3 px-16 rounded-lg hover:opacity-90 transition duration-300">Submit Survey</button>            
+            </div>
+        </form>
+
+    </div>
+
+    <div id="data-privacy-modal" class="modal-backdrop">
+        <div class="modal-content relative max-w-lg">
+            <button type="button" class="absolute top-4 left-4 text-gray-500 hover:text-gray-800 modal-close-x" onclick="goToHome()">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <div class="text-center p-8">
+                <div class="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                    <img src="User View/Survey/dataprivacyact.png" alt="">
+                </div>
+                <h2 class="text-2xl font-bold mb-6 text-gray-800">Data Privacy Notice</h2>
+
+                <div class="text-left text-sm h-64 overflow-y-auto pr-2 mb-6">
+                    <p class="mb-4">Your privacy is important to us.</p>
+                    <p class="mb-4">All responses collected through this survey are handled in accordance with the "Data Privacy Act of 2012" and "ARTA guidelines". The information you provide is kept strictly confidential and will be used solely for internal evaluation and the improvement of government services.</p>
+                    <p class="mb-4 font-bold">No personal or identifiable data will be shared or disclosed publicly.</p>
+                    <div class="border-t border-gray-300 my-4"></div>
+                    <p class="text-base font-semibold mb-2">Information We Collect</p>
+                    <ul class="list-disc list-inside space-y-1 ml-4">
+                        <li>Basic demographic information (region, age, gender)</li>
+                        <li>Service office and type of service availed</li>
+                        <li>Client type classification</li>
+                        <li>Feedback and ratings on service quality</li>
+                        <li>Email address (optional, for follow-up purposes)</li>
+                    </ul>
+                    <p class="text-base font-semibold mt-4 mb-2">How We Use Your Information</p>
+                    <ul class="list-disc list-inside space-y-1 ml-4">
+                        <li>Analyzing service quality and citizen satisfaction</li>
+                        <li>Identifying areas for improvement in government services</li>
+                        <li>Generating statistical reports and insights</li>
+                        <li>Following up on specific concerns (if email is provided)</li>
+                        <li>Compliance with transparency and accountability requirements</li>
+                    </ul>
+                    <p class="text-base font-semibold mt-4 mb-2">Data Protection</p>
+                    <p class="mb-4">We implement appropriate security measures to protect your personal information... Your data will be stored securely and retained only for as long as necessary to fulfill the purposes stated above.</p>
+                    <p class="text-base font-semibold mt-4 mb-2">Your Rights</p>
+                    <p>Under the Data Privacy Act, you have the right to:</p>
+                    <ul class="list-disc list-inside space-y-1 ml-4">
+                        <li>Be informed about the collection and processing of your data</li>
+                        <li>Access your personal information</li>
+                        <li>Correct inaccurate or incomplete data</li>
+                        <li>Object to the processing of your data</li>
+                        <li>Request erasure or blocking of your data</li>
+                    </ul>
+                </div>
+                
+                <div class="border-t border-gray-300 mt-4 pt-4 flex flex-col items-center">
+                    <label class="flex items-center mb-4">
+                        <input type="checkbox" id="privacy-checkbox" class="form-checkbox text-blue-600 w-5 h-5">
+                        <span class="ml-2 text-sm">I have read and understood the "Data Privacy Notice".</span>
+                    </label>
+                    <button type="button" id="proceed-btn" disabled class="submit-btn text-white font-bold py-2 px-8 rounded-lg opacity-50 cursor-not-allowed" onclick="proceedToSurvey()">Proceed</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="submit-confirm-modal" class="modal-backdrop">
+        <div class="modal-content relative max-w-sm text-center p-8">
+            <button type="button" class="absolute top-4 left-4 text-gray-500 hover:text-gray-800 modal-close-x" onclick="closeModal('submit-confirm-modal')">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="mx-auto w-20 h-20 rounded-full flex items-center justify-center mb-6" style="background-color: var(--color-dark-blue);">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9.247a3.75 3.75 0 000 5.506c.499.73 1.258 1.159 2.11 1.159h3.407A4.125 4.125 0 0018 10.5v-1.5a4.125 4.125 0 00-4.125-4.125H10.338c-.852 0-1.611.429-2.11 1.159zM8.228 9.247L6.75 7.77m1.478 1.477L9.706 12m-1.478-1.477l1.478-1.478"></path><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"></path></svg>
+            </div>
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">Are you sure to submit the survey?</h2>
+            <p class="text-sm text-gray-600 mb-6">You can always go back to review your answers! If you’re satisfied with everything click the “Submit Survey” button to complete your feedback submission.</p>
+            <div class="flex justify-center space-x-4">
+                <button type="button" onclick="closeModal('submit-confirm-modal')" class="go-back-btn-fill font-bold py-2 px-6 rounded-lg hover:opacity-90 transition duration-300">Go Back</button>
+                <button type="button" onclick="completeSurvey()" class="submit-btn text-white font-bold py-2 px-6 rounded-lg hover:opacity-90 transition duration-300">Submit Survey</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="thank-you-modal" class="modal-backdrop">
+        <div class="modal-content relative max-w-sm text-center p-8">
+            <button type="button" class="absolute top-4 left-4 text-gray-500 hover:text-gray-800 modal-close-x" onclick="goToHome()">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="mx-auto w-20 h-20 rounded-full flex items-center justify-center mb-6" style="background-color: var(--color-dark-blue);">
+                <img src="User View/Survey/ccs page icon.png" alt="">
+            </div>
+            <h2 class="text-3xl font-bold mb-4 text-gray-800">Thank You!</h2>
+            <p class="text-sm text-gray-600 mb-6">Your feedback has been successfully submitted. We appreciate you taking the time to help us improve our services.</p>
+            <button type="button" onclick="goToHome()" class="success-btn font-bold py-3 px-8 rounded-lg hover:opacity-90 transition duration-300">Survey Completed Successfully!</button>
+            <p class="text-xs text-gray-500 mt-4">You will be redirected to the home page shortly.</p>
+        </div>
+    <script src="script.js"></script>
+    <script type="module">
+        /**
+         * Survey.html Main Module
+         * Integrates Firebase backend with survey form handling
+         */
+        
+        import { initializeSurveyHandlers, validateFormAndProceed, showConfirmationBeforeSubmit, handleCC1Change } from './survey-submission.js';
+
+        // Initialize survey handlers on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeSurveyHandlers();
+
+            // Show form 1 by default
+            document.getElementById('form-1').classList.remove('hidden');
+            updateProgressBar();
+        });
+
+        // Global functions for HTML onclick handlers
+        window.validateForm = function(formNumber) {
+            if (formNumber === 4) {
+                // Final submission - show confirmation modal
+                showConfirmationBeforeSubmit();
+            } else {
+                // Validate and proceed to next form
+                validateFormAndProceed(formNumber);
+            }
+        };
+
+        window.proceedToSurvey = function() {
+            // Handler for privacy notice acceptance
+            const privacyModal = document.getElementById('data-privacy-modal');
+            if (privacyModal) {
+                privacyModal.style.display = 'none';
+            }
+            // Initialize first form
+            document.getElementById('form-1').classList.remove('hidden');
+            updateProgressBar();
+        };
+
+        window.completeSurvey = async function() {
+            // Handler for final survey submission after confirmation
+            const submitConfirmModal = document.getElementById('submit-confirm-modal');
+            if (submitConfirmModal) {
+                submitConfirmModal.style.display = 'none';
+            }
+            
+            // Import and call submit function
+            const { submitSurvey } = await import('./survey-submission.js');
+            await submitSurvey();
+        };
+
+        window.goToHome = function() {
+            window.location.href = '/index.html';
+        };
+
+        window.showModal = function(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+        };
+
+        window.closeModal = function(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        };
+
+        window.handleCC1Change = handleCC1Change;
+
+        // Progress bar updater
+        function updateProgressBar() {
+            const forms = document.querySelectorAll('.survey-form');
+            let completedForms = 0;
+
+            forms.forEach((form, index) => {
+                if (!form.classList.contains('hidden')) {
+                    completedForms = index;
+                }
+            });
+
+            const progress = ((completedForms + 1) / forms.length) * 100;
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+
+            if (progressBar) {
+                progressBar.style.width = `${progress}%`;
+            }
+
+            if (progressText) {
+                progressText.textContent = `${Math.round(progress)}% Complete`;
+            }
+        }
+    </script>
+
+</body>
+</html>

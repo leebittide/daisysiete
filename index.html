@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Valenzuelife - Your Voice Matters</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "primary-dark": "#163973",
+              "brand-blue": "#2563EB",
+              "dark-gray": "#374151",
+              "light-bg": "#F9FAFB",
+            },
+          },
+        },
+      };
+    </script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="antialiased text-dark-gray">
+    <header class="header-bg sticky top-0 z-50 shadow-lg">
+      <nav class="max-w-7xl mx-auto flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
+        <!-- Mobile Menu Button + Logo -->
+        <div class="flex items-center space-x-2 md:hidden">
+          <button class="burger-btn" id="burgerBtn">
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+          </button>
+          <a href="index.html" class="flex items-center">
+            <img src="User View/Nav/valenzuealife.png" alt="Valenzuela City Seal" class="h-16 w-16 object-contain" />
+          </a>
+        </div>
+
+        <!-- Desktop Logo -->
+        <div class="hidden md:flex items-center space-x-4">
+          <a href="index.html" class="flex items-center hover:opacity-80 transition">
+            <img src="User View/Nav/valenzuealife.png" alt="Valenzuela City Seal" class="h-20 w-20 object-contain" />
+          </a>
+          <img src="User View/Nav/text.png" alt="Valenzuelife Text Logo" class="h-10 object-contain hidden sm:block" />
+        </div>
+
+        <div class="flex-grow flex justify-center hidden md:flex">
+          <div class="flex space-x-10 text-white text-sm font-bold tracking-widest">
+            <a href="index.html" class="nav-link active hover:text-blue-300 transition duration-150">HOME</a>
+            <a href="about.html" class="nav-link hover:text-blue-300 transition duration-150">ABOUT US</a>
+            <a href="howitworks.html" class="nav-link hover:text-blue-300 transition duration-150">HOW IT WORKS</a>
+            <a href="help.html" class="nav-link hover:text-blue-300 transition duration-150">HELP</a>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-4 flex-shrink-0">
+          <a href="survey.html" class="bg-white text-primary-dark font-bold text-sm px-4 py-2 rounded-full shadow-lg hover:bg-gray-200 transition duration-150">Take the Survey</a>
+          <a href="admin.html" class="text-white hover:text-blue-300 transition duration-150 flex items-center">
+            <img src="User View/Nav/adminlogin.png" alt="Admin Login Shield" class="h-7 w-7 object-contain" />
+          </a>
+        </div>
+      </nav>
+
+      <!-- Mobile Navigation Menu -->
+      <div id="mobileNav" class="md:hidden bg-primary-dark text-white">
+        <a href="index.html" class="block px-4 py-3 border-b border-primary-dark">HOME</a>
+        <a href="about.html" class="block px-4 py-3 border-b border-primary-dark">ABOUT US</a>
+        <a href="howitworks.html" class="block px-4 py-3 border-b border-primary-dark">HOW IT WORKS</a>
+        <a href="help.html" class="block px-4 py-3 border-b border-primary-dark">HELP</a>
+      </div>
+    </header>
+
+    <section
+      class="header-bg text-white relative overflow-hidden flex items-center"
+      style="min-height: calc(100vh - 64px)"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row justify-between items-center w-full"
+      >
+        <div class="lg:w-2/3 relative z-10 py-16 lg:py-0">
+          <h1 class="text-4xl sm:text-6xl font-extrabold leading-tight mb-4">
+            Your Voice Matters. <br />Help Us Serve You Better.
+          </h1>
+          <p class="text-xl text-gray-200 mb-8 max-w-xl">
+            Share your concerns, suggestions, and feedback directly with your
+            local government. Together, we can build a more responsive and
+            efficient community.
+          </p>
+
+          <div
+            class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6"
+          >
+            <a
+              href="survey.html"
+              class="bg-white text-primary-dark font-bold px-8 py-3 rounded-full shadow-lg hover:bg-gray-200 transition duration-300 text-center"
+            >
+              Get Started
+            </a>
+            <a
+              href="howitworks.html"
+              class="bg-transparent border border-white text-white font-bold px-8 py-3 rounded-full hover:bg-white hover:text-primary-dark transition duration-300 text-center"
+            >
+              Learn More
+            </a>
+          </div>
+        </div>
+
+        <div
+          class="mt-8 lg:mt-0 lg:w-1/3 flex justify-center items-center py-16 lg:py-0"
+        >
+          <img
+            src="User View/User Home/whitesurvey.png"
+            alt="Hand holding phone taking survey"
+            class="hero-illustration object-contain"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section id="about-us" class="section-padding max-w-7xl mx-auto">
+      <h2
+        class="text-center text-3xl sm:text-4xl font-extrabold text-primary-dark mb-12"
+      >
+        About Us
+      </h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="order-2 lg:order-1 flex justify-center">
+          <img
+            src="User View/User Home/aboutus.png"
+            alt="Empowering Citizens Illustration"
+            class="max-w-full h-auto"
+          />
+        </div>
+
+        <div class="order-1 lg:order-2">
+          <h3 class="text-2xl font-bold text-dark-gray mb-4">
+            Empowering Citizens, Improving Services.
+          </h3>
+          <p class="text-gray-600 leading-relaxed text-lg">
+            The ARTA CSS System connects you directly with local government.
+            We're committed to transparency, accountability, and continuous
+            improvement. Your feedback drives real change in our community—from
+            infrastructure improvements to better public services. Every voice
+            counts in shaping the future of Valenzuela.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div class="p-6">
+          <img
+            src="User View/User Home/quicksimple.png"
+            alt="Quick & Simple Icon"
+            class="w-16 h-16 mx-auto mb-4 object-contain"
+          />
+          <h4 class="lg:text-lg font-bold text-primary-dark mb-2">
+            Quick & Simple
+          </h4>
+          <p class="text-sm text-gray-600">
+            Submit feedback in minutes through our easy-to-use platform. No
+            complicated forms or lengthy processes—just straightforward
+            communication with your local government.
+          </p>
+        </div>
+
+        <div class="p-6">
+          <img
+            src="User View/User Home/transparentaccountable.png"
+            alt="Transparent & Accountable Icon"
+            class="w-16 h-16 mx-auto mb-4 object-contain"
+          />
+          <h4 class="lg:text-lg font-bold text-primary-dark mb-2">
+            Transparent & Accountable
+          </h4>
+          <p class="text-sm text-gray-600">
+            We value transparency and ensure that your feedback reaches the
+            right departments. Each submission is properly documented and helps
+            us monitor progress on service delivery and improvement initiatives.
+          </p>
+        </div>
+
+        <div class="p-6">
+          <img
+            src="User View/User Home/continuousimprovement.png"
+            alt="Continuous Improvement Icon"
+            class="w-16 h-16 mx-auto mb-4 object-contain"
+          />
+          <h4 class="lg:text-lg font-bold text-primary-dark mb-2">
+            Continuous Improvement
+          </h4>
+          <p class="text-sm text-gray-600">
+            Your voice fuels change. Feedback gathered through this system is
+            analyzed and used to develop better policies, streamline processes,
+            and deliver high-quality public services that meet community needs.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="how-it-works" class="section-padding bg-gray-50">
+      <div class="max-w-7xl mx-auto">
+        <h2
+          class="text-center text-3xl sm:text-4xl font-extrabold text-primary-dark mb-12"
+        >
+          How It Works?
+        </h2>
+
+        <div class="relative hidden md:block">
+          <div class="how-it-works-line"></div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+          <div class="text-center p-2 md:p-4 relative z-10">
+            <p class="step-number">01</p>
+            <div class="hidden md:block step-connector"></div>
+            <img
+              src="User View/HowitWorks/survey123.png"
+              alt="Provide Information Icon"
+              class="w-20 h-20 mx-auto mb-4 object-contain mt-8"
+            />
+            <h4 class="font-bold text-primary-dark mb-2">
+              Provide Your Information
+            </h4>
+            <p class="text-xs text-gray-600 text-left px-2">
+              Fill out a simple form with your basic details including client
+              type, age, region of residence, and the service you utilize. This
+              helps us understand who we are serving and which departments to
+              evaluate.
+            </p>
+          </div>
+
+          <div class="text-center p-2 md:p-4 relative z-10">
+            <p class="step-number">02</p>
+            <div class="hidden md:block step-connector"></div>
+            <img
+              src="User View/HowitWorks/messagebubble.png"
+              alt="Answer Awareness Questions Icon"
+              class="w-20 h-20 mx-auto mb-4 object-contain mt-8"
+            />
+            <h4 class="font-bold text-primary-dark mb-2">
+              Answer Awareness Questions
+            </h4>
+            <p class="text-xs text-gray-600 text-left px-2">
+              Tell us about your knowledge of the Citizen's Charter and the
+              services offered by the office to improve communication.
+            </p>
+          </div>
+
+          <div class="text-center p-2 md:p-4 relative z-10">
+            <p class="step-number">03</p>
+            <div class="hidden md:block step-connector"></div>
+            <img
+              src="User View/HowitWorks/experience.png"
+              alt="Rate Your Experience Icon"
+              class="w-20 h-20 mx-auto mb-4 object-contain mt-8"
+            />
+            <h4 class="font-bold text-primary-dark mb-2">
+              Rate Your Experience
+            </h4>
+            <p class="text-xs text-gray-600 text-left px-2">
+              Evaluate the quality of service you received using our
+              satisfaction scale. Rate various aspects from staff courtesy to
+              facility cleanliness, processing time, and overall service
+              quality.
+            </p>
+          </div>
+
+          <div class="text-center p-2 md:p-4 relative z-10">
+            <p class="step-number">04</p>
+            <div class="hidden md:block step-connector"></div>
+            <img
+              src="User View/HowitWorks/chatbubble.png"
+              alt="Share Additional Feedback Icon"
+              class="w-20 h-20 mx-auto mb-4 object-contain mt-8"
+            />
+            <h4 class="font-bold text-primary-dark mb-2">
+              Share Additional Feedback
+            </h4>
+            <p class="text-xs text-gray-600 text-left px-2">
+              Provide suggestions for improvement and share your overall
+              experience. Your insights help us identify specific areas where we
+              can serve you better. Submit and receive instant confirmation.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- START OF UPDATED FAQS SECTION -->
+    <section id="faqs" class="section-padding max-w-5xl mx-auto">
+      <h2
+        class="text-center text-3xl sm:text-4xl font-extrabold text-primary-dark mb-12"
+      >
+        FAQs
+      </h2>
+
+      <div class="space-y-4" id="faq-container">
+        <div
+          class="faq-item bg-white rounded-lg overflow-hidden shadow-md border border-gray-200"
+        >
+          <button
+            class="faq-toggle w-full flex justify-between items-center p-4 text-left font-semibold text-dark-gray hover:bg-blue-50 transition duration-150"
+          >
+            How do I submit feedback to the local government?
+            <svg
+              class="faq-icon w-6 h-6 text-dark-gray transition duration-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              ></path>
+            </svg>
+          </button>
+          <div class="faq-content px-4 text-gray-600">
+            <p>
+              Simply click "Take the Survey" or "Get Started" to begin. You'll
+              be guided through a short form where you can select the service
+              category and provide your feedback. The entire process takes less
+              than 5 minutes.
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="faq-item bg-white rounded-lg overflow-hidden shadow-md border border-gray-200"
+        >
+          <button
+            class="faq-toggle w-full flex justify-between items-center p-4 text-left font-semibold text-dark-gray hover:bg-gray-50 transition duration-150"
+          >
+            Is my personal information safe and confidential?
+            <svg
+              class="faq-icon w-6 h-6 text-dark-gray transition duration-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              ></path>
+            </svg>
+          </button>
+          <div class="faq-content px-4 text-gray-600">
+            <p>
+              Yes, your privacy is our priority. Personal data is encrypted and
+              handled in strict compliance with the Data Privacy Act of 2012 (RA
+              10173). It is used solely for verification and to ensure
+              accountability in the feedback process.
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="faq-item bg-white rounded-lg overflow-hidden shadow-md border border-gray-200"
+        >
+          <button
+            class="faq-toggle w-full flex justify-between items-center p-4 text-left font-semibold text-dark-gray hover:bg-gray-50 transition duration-150"
+          >
+            How does my feedback lead to actual improvements?
+            <svg
+              class="faq-icon w-6 h-6 text-dark-gray transition duration-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              ></path>
+            </svg>
+          </button>
+          <div class="faq-content px-4 text-gray-600">
+            <p>
+              Feedback is routed to the corresponding department, reviewed by
+              data analysts, and aggregated to identify systemic issues and
+              areas for improvement. This data informs policy adjustments and
+              service delivery enhancements.
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="faq-item bg-white rounded-lg overflow-hidden shadow-md border border-gray-200"
+        >
+          <button
+            class="faq-toggle w-full flex justify-between items-center p-4 text-left font-semibold text-dark-gray hover:bg-gray-50 transition duration-150"
+          >
+            Can I submit feedback more than once?
+            <svg
+              class="faq-icon w-6 h-6 text-dark-gray transition duration-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              ></path>
+            </svg>
+          </button>
+          <div class="faq-content px-4 text-gray-600">
+            <p>
+              Yes, citizens are encouraged to submit feedback as often as
+              needed. Each piece of feedback helps the City Government in its
+              commitment to continuous improvement.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END OF UPDATED FAQS SECTION -->
+
+    <footer class="footer-container">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8 text-white">
+        <div class="max-w-4xl mx-auto">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 pb-8">
+            <div class="md:col-span-1">
+              <h5
+                class="text-xl font-extrabold mb-4 flex items-center space-x-3 text-white"
+              >
+                <svg
+                  class="w-7 h-7"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  ></path>
+                </svg>
+                <span>Explore?</span>
+              </h5>
+              <ul class="space-y-2 text-base text-gray-300">
+                <li>
+                  <a href="index.html" class="hover:text-white transition duration-150"
+                    >Home</a
+                  >
+                </li>
+                <li>
+                  <a href="about.html" class="hover:text-white transition duration-150"
+                    >About Us</a
+                  >
+                </li>
+                <li>
+                  <a href="howitworks.html" class="hover:text-white transition duration-150"
+                    >How It Works?</a
+                  >
+                </li>
+                <li>
+                  <a href="help.html" class="hover:text-white transition duration-150"
+                    >Help</a
+                  >
+                </li>
+                <li>
+                  <a href="survey.html" class="hover:text-white transition duration-150"
+                    >Take the Survey!</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="md:col-span-1 pt-8 md:pt-0">
+              <h5
+                class="text-xl font-extrabold mb-4 flex items-center space-x-3 text-white"
+              >
+                <svg
+                  class="w-7 h-7"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1"
+                  ></path>
+                </svg>
+                <span>Governance & Policy</span>
+              </h5>
+              <ul class="space-y-2 text-base text-gray-300">
+                <li>
+                  <button onclick="showModal('data-privacy-modal')" class="hover:text-white transition duration-150 whitespace-nowrap text-left">
+                    Data Privacy Act
+                  </button>
+                </li>
+                <li>
+                  <button onclick="showModal('terms-of-service-modal')" class="hover:text-white transition duration-150 whitespace-nowrap text-left">
+                    Terms of Service
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div class="md:col-span-1 pt-8 md:pt-0">
+              <h5
+                class="text-xl font-extrabold mb-4 flex items-center space-x-3 text-white"
+              >
+                <svg
+                  class="w-7 h-7"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  ></path>
+                </svg>
+                <span>Connect With Us</span>
+              </h5>
+              <ul class="space-y-3 text-base text-gray-300">
+                <li class="flex items-start space-x-3">
+                  <svg
+                    class="w-6 h-6 mt-0.5 flex-shrink-0 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    ></path>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    ></path>
+                  </svg>
+                  <span class="text-gray-300"
+                    >City Hall, Maysan Road, <br />Valenzuela City,
+                    Philippines</span
+                  >
+                </li>
+                <li class="flex items-center space-x-3">
+                  <svg
+                    class="w-6 h-6 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    ></path>
+                  </svg>
+                  <span class="text-gray-300">(02) 8352-1000</span>
+                </li>
+                <li class="flex items-center space-x-3">
+                  <svg
+                    class="w-6 h-6 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-2 4v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7"
+                    ></path>
+                  </svg>
+                  <span class="text-gray-300"
+                    >ictosupport@valenzuela.gov.ph</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 text-center border-t border-gray-600">
+          <p class="text-sm text-gray-300">
+            &copy; City Government of Valenzuela. All rights reserved 2025
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Data Privacy Act Modal -->
+    <div id="data-privacy-modal" class="modal-backdrop" style="display: none;">
+      <div class="modal-content bg-white rounded-lg shadow-lg max-w-2xl">
+        <div class="flex justify-between items-center p-6 border-b border-gray-200">
+          <h2 class="text-2xl font-extrabold text-primary-dark">Data Privacy Act</h2>
+          <button onclick="closeModal('data-privacy-modal')" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+        </div>
+        <div class="p-6 text-gray-700 max-h-96 overflow-y-auto">
+          <h3 class="text-lg font-semibold mb-4">Republic Act No. 10173 - Data Privacy Act of 2012</h3>
+          <p class="mb-4">This is the primary data privacy law in the Philippines. It aims to protect the fundamental human right to privacy of information while ensuring free flow of information.</p>
+          <h4 class="font-semibold mt-4 mb-2">Key Provisions:</h4>
+          <ul class="list-disc list-inside space-y-2 mb-4">
+            <li>Personal information must be processed lawfully and fairly</li>
+            <li>Data subjects have rights to access, rectify, and erase their personal data</li>
+            <li>Organizations must implement reasonable and appropriate security measures</li>
+            <li>Unauthorized processing of personal information is prohibited</li>
+            <li>Data breaches must be reported to the National Privacy Commission</li>
+          </ul>
+          <p class="mb-4">All feedback submitted through this system is protected under RA 10173 and is handled with utmost confidentiality.</p>
+        </div>
+        <div class="p-6 border-t border-gray-200 text-right">
+          <button onclick="closeModal('data-privacy-modal')" class="bg-primary-dark text-white px-6 py-2 rounded-lg hover:bg-opacity-90">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Terms of Service Modal -->
+    <div id="terms-of-service-modal" class="modal-backdrop" style="display: none;">
+      <div class="modal-content bg-white rounded-lg shadow-lg max-w-2xl">
+        <div class="flex justify-between items-center p-6 border-b border-gray-200">
+          <h2 class="text-2xl font-extrabold text-primary-dark">Terms of Service</h2>
+          <button onclick="closeModal('terms-of-service-modal')" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+        </div>
+        <div class="p-6 text-gray-700 max-h-96 overflow-y-auto">
+          <h3 class="text-lg font-semibold mb-4">Terms and Conditions</h3>
+          <h4 class="font-semibold mt-4 mb-2">1. Acceptance of Terms</h4>
+          <p class="mb-4">By using this feedback system, you agree to comply with these terms and conditions and all applicable laws and regulations.</p>
+          <h4 class="font-semibold mt-4 mb-2">2. User Responsibilities</h4>
+          <p class="mb-4">Users agree to provide accurate and truthful information. Abuse of the system, including false reports or harassment, is strictly prohibited.</p>
+          <h4 class="font-semibold mt-4 mb-2">3. Intellectual Property</h4>
+          <p class="mb-4">All content provided by the City Government of Valenzuela is protected by copyright. Unauthorized reproduction is prohibited.</p>
+          <h4 class="font-semibold mt-4 mb-2">4. Limitation of Liability</h4>
+          <p class="mb-4">The City Government is not liable for any indirect, incidental, or consequential damages arising from the use of this system.</p>
+          <h4 class="font-semibold mt-4 mb-2">5. Modifications</h4>
+          <p class="mb-4">These terms may be modified at any time. Continued use of the system constitutes acceptance of any changes.</p>
+        </div>
+        <div class="p-6 border-t border-gray-200 text-right">
+          <button onclick="closeModal('terms-of-service-modal')" class="bg-primary-dark text-white px-6 py-2 rounded-lg hover:bg-opacity-90">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

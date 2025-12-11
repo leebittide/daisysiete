@@ -1,0 +1,186 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+    /**
+     * Helper function: Check if user is authenticated
+     */
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    /**
+     * Helper function: Check if user is super_admin
+     * Used to restrict invitation creation
+     */
+    function isSuperAdmin() {
+      return request.auth != null &&
+             (request.auth.token.role == 'super_admin' ||
+              (exists(/databases/$(database)/documents/admin_users/$(request.auth.uid)) &&
+               get(/databases/$(database)/documents/admin_users/$(request.auth.uid)).data.role == 'super_admin'));
+    }
+
+    /**
+     * Helper function: Get user's role from admin_users
+     */
+    function getUserRole() {
+      return request.auth != null &&
+             exists(/databases/$(database)/documents/admin_users/$(request.auth.uid)) ?
+             get(/databases/$(database)/documents/admin_users/$(request.auth.uid)).data.role :
+             null;
+    }
+
+    
+    // Pending invites: super_admin can create, list; invited users can see their own
+    match /pending_invites/{inviteId} {
+      // Super admin can create and read all pending invites
+      allow read: if request.auth != null;
+      
+      // Super admin can create pending invites (will create auth user and move to admin_users)
+      // Allow any authenticated user to create for now - will be restricted by admin UI
+      allow create: if request.auth != null
+                    && request.resource.data.email != null
+                    && request.resource.data.first_name != null
+                    && request.resource.data.last_name != null
+                    && request.resource.data.role != null
+                    && request.resource.data.temp_password != null;
+      
+      // Super admin can update to activate user (move to admin_users)
+      allow update: if request.auth != null;
+      
+      // Anyone authenticated can delete (will be restricted by admin UI/permissions check)
+      allow delete: if request.auth != null;
+    }
+
+
+    // ===== INVITES COLLECTION =====
+    // Manages user invitation workflow
+    match /invites/{document=**} {
+      
+      // Create: Only super_admin can create invites
+      allow create: if isAuthenticated() && 
+                       isSuperAdmin() &&
+                       request.resource.data.email is string &&
+                       request.resource.data.role is string &&
+                       request.resource.data.status == 'pending' &&
+                       ['super_admin', 'admin', 'data_analyst', 'survey_manager'].has(request.resource.data.role);
+      
+      // Read: Super admin can read all; invited users can read their own
+      allow read: if isSuperAdmin() ||
+                     (isAuthenticated() && resource.data.email == request.auth.token.email);
+      
+      // Update: Only the creator (invitedBy) can update, or super_admin
+      allow update: if isAuthenticated() && 
+                       (isSuperAdmin() ||
+                        (request.auth.uid == resource.data.invitedBy &&
+                         request.resource.data.status == 'completed' && 
+                         resource.data.status == 'pending'));
+      
+      // Delete: Only creator or super_admin can delete
+      allow delete: if isAuthenticated() && 
+                       (isSuperAdmin() || request.auth.uid == resource.data.invitedBy);
+    }
+
+    // ===== ADMIN_USERS COLLECTION =====
+    // Stores user role and account information
+    match /admin_users/{docId} {
+      
+      // Create: Any authenticated user can create (frontend enforces super_admin check)
+      allow create: if request.auth != null &&
+                       request.resource.data.email is string &&
+                       request.resource.data.role is string &&
+                       request.resource.data.status is string &&
+                       request.resource.data.status == 'active';
+      
+      // Read: Allow all authenticated users to read (frontend enforces role-based access)
+      allow read: if isAuthenticated();
+      
+      // Update: Users can update their own document
+      // Super admin (checked via token or admin_users) can update any document
+      allow update: if isAuthenticated() && 
+                       (request.auth.uid == docId || 
+                        request.auth.token.role == 'super_admin' ||
+                        (exists(/databases/$(database)/documents/admin_users/$(request.auth.uid)) &&
+                         get(/databases/$(database)/documents/admin_users/$(request.auth.uid)).data.role == 'super_admin'));
+      
+      // Delete: Only super_admin can delete (frontend enforces this)
+      allow delete: if request.auth != null &&
+                       (request.auth.token.role == 'super_admin' ||
+                        (exists(/databases/$(database)/documents/admin_users/$(request.auth.uid)) &&
+                         get(/databases/$(database)/documents/admin_users/$(request.auth.uid)).data.role == 'super_admin'));
+    }
+
+    // ===== SURVEY_QUESTIONS COLLECTION =====
+    // Manage survey questions (existing functionality)
+    match /survey_questions/{docId} {
+      
+      // Read: All authenticated users can read questions
+      allow read: if isAuthenticated();
+      
+      // Create/Update/Delete: Only admin roles can manage questions
+      allow write: if isAuthenticated() && 
+                      getUserRole() in ['super_admin', 'admin', 'survey_manager'];
+    }
+
+    // ===== SURVEY_RESPONSES COLLECTION =====
+    // Store survey responses (existing functionality)
+    match /survey_responses/{docId} {
+      
+      // Read: Authenticated users can read responses
+      allow read: if isAuthenticated();
+      
+      // Create/Update: Authenticated users can create/update their own responses
+      allow write: if isAuthenticated();
+    }
+
+    // ===== DEFAULT DENY =====
+    // Deny all access by default (fail-safe)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    
+    /**
+     * Validates incoming survey submission data
+     * Ensures all required fields are present and of correct type
+     */
+    function isValidSurveySubmission() {
+      return request.resource.data.keys().hasAll([
+        'clientType', 'date', 'age', 'serviceAvailed', 
+        'regionOfResidence', 'sex', 'citizensCharter', 
+        'serviceQuality', 'feedback'
+      ]) &&
+      request.resource.data.clientType is string &&
+      request.resource.data.date is string &&
+      request.resource.data.age is number &&
+      request.resource.data.serviceAvailed is string &&
+      request.resource.data.regionOfResidence is string &&
+      request.resource.data.sex is string &&
+      request.resource.data.citizensCharter is map &&
+      request.resource.data.serviceQuality is map &&
+      request.resource.data.feedback is map &&
+      request.resource.data.age >= 1 &&
+      request.resource.data.age <= 150 &&
+      request.resource.data.clientType in ['citizen', 'business', 'government'] &&
+      request.resource.data.sex in ['Male', 'Female', 'Others'] &&
+      request.resource.data.citizensCharter.keys().hasAll(['cc1', 'cc2', 'cc3']) &&
+      request.resource.data.serviceQuality.keys().hasAll([
+        'sqd0', 'sqd1', 'sqd2', 'sqd3', 'sqd4', 
+        'sqd5', 'sqd6', 'sqd7', 'sqd8'
+      ]) &&
+      request.resource.data.feedback.keys().hasAll(['suggestions', 'email']) &&
+      (request.resource.data.feedback.email == '' || 
+       isValidEmail(request.resource.data.feedback.email)) &&
+      request.resource.data.serviceAvailed.size() >= 2 &&
+      request.resource.data.serviceAvailed.size() <= 100 &&
+      request.resource.data.feedback.suggestions.size() <= 500;
+    }
+
+    /**
+     * Validates email format
+     */
+    function isValidEmail(email) {
+      // Simple email validation - check for @ symbol
+      return email.matches('.*@.*');
+    }
+  }
+}
