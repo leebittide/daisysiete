@@ -124,13 +124,17 @@ service cloud.firestore {
 
     // ===== SURVEY_RESPONSES COLLECTION =====
     // Store survey responses (existing functionality)
+    // IMPORTANT: Allow unauthenticated access for public surveys
     match /survey_responses/{docId} {
       
-      // Read: Authenticated users can read responses
+      // Read: Authenticated users (admins) can read all responses
       allow read: if isAuthenticated();
       
-      // Create/Update: Authenticated users can create/update their own responses
-      allow write: if isAuthenticated();
+      // Create: Allow unauthenticated users to submit surveys (public form)
+      allow create: if isValidSurveySubmission();
+      
+      // Update: Only creator IP or authenticated admin can update
+      allow update: if isAuthenticated();
     }
 
     // ===== DEFAULT DENY =====

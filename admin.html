@@ -3954,14 +3954,20 @@
                     return { success: false, message: 'You must be logged in to invite users' };
                 }
 
-                const adminUsersRef = window.collection(window.db, 'admin_users');
+                // IMPORTANT: Always fetch fresh user doc to avoid stale role data after deletions
                 const currentUserDoc = await window.getDoc(window.doc(window.db, 'admin_users', currentUser.uid));
                 
-                if (!currentUserDoc.exists() || currentUserDoc.data().role !== 'super_admin') {
+                if (!currentUserDoc.exists()) {
+                    return { success: false, message: 'Your admin account was not found. Please log in again.' };
+                }
+
+                const userRole = currentUserDoc.data().role;
+                if (userRole !== 'super_admin') {
                     return { success: false, message: 'Only super_admin can invite users' };
                 }
 
                 // Check if email already exists in admin_users
+                const adminUsersRef = window.collection(window.db, 'admin_users');
                 const existingQuery = window.query(adminUsersRef, window.where('email', '==', email));
                 const existingDocs = await window.getDocs(existingQuery);
 
