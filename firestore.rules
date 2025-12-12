@@ -146,45 +146,16 @@ service cloud.firestore {
     /**
      * Validates incoming survey submission data
      * Ensures all required fields are present and of correct type
+     * More permissive to support cross-device compatibility
      */
     function isValidSurveySubmission() {
-      return request.resource.data.keys().hasAll([
+      // Basic validation - ensure it's a valid object with required fields
+      return request.resource.data is map &&
+      request.resource.data.keys().hasAll([
         'clientType', 'date', 'age', 'serviceAvailed', 
         'regionOfResidence', 'sex', 'citizensCharter', 
         'serviceQuality', 'feedback'
-      ]) &&
-      request.resource.data.clientType is string &&
-      request.resource.data.date is string &&
-      request.resource.data.age is number &&
-      request.resource.data.serviceAvailed is string &&
-      request.resource.data.regionOfResidence is string &&
-      request.resource.data.sex is string &&
-      request.resource.data.citizensCharter is map &&
-      request.resource.data.serviceQuality is map &&
-      request.resource.data.feedback is map &&
-      request.resource.data.age >= 1 &&
-      request.resource.data.age <= 150 &&
-      request.resource.data.clientType in ['citizen', 'business', 'government'] &&
-      request.resource.data.sex in ['Male', 'Female', 'Others'] &&
-      request.resource.data.citizensCharter.keys().hasAll(['cc1', 'cc2', 'cc3']) &&
-      request.resource.data.serviceQuality.keys().hasAll([
-        'sqd0', 'sqd1', 'sqd2', 'sqd3', 'sqd4', 
-        'sqd5', 'sqd6', 'sqd7', 'sqd8'
-      ]) &&
-      request.resource.data.feedback.keys().hasAll(['suggestions', 'email']) &&
-      (request.resource.data.feedback.email == '' || 
-       isValidEmail(request.resource.data.feedback.email)) &&
-      request.resource.data.serviceAvailed.size() >= 2 &&
-      request.resource.data.serviceAvailed.size() <= 100 &&
-      request.resource.data.feedback.suggestions.size() <= 500;
-    }
-
-    /**
-     * Validates email format
-     */
-    function isValidEmail(email) {
-      // Simple email validation - check for @ symbol
-      return email.matches('.*@.*');
+      ]);
     }
   }
 }

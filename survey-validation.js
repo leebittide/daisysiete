@@ -390,6 +390,7 @@ export function formatSurveyForStorage(form1Data, form2Data, form3Data, form4Dat
     date: form1Data.date,
     age: parseInt(form1Data.age, 10),
     serviceAvailed: form1Data.serviceAvailed,
+    otherService: form1Data.otherService || '', // Include other service if "Other" was selected
     regionOfResidence: form1Data.regionOfResidence,
     sex: form1Data.sex,
 
