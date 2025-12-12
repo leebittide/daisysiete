@@ -1978,6 +1978,10 @@
         function navigateTo(viewId) {
             currentView = viewId;
             
+            // Save current view to sessionStorage so it can be restored on page refresh
+            sessionStorage.setItem('lastActiveTab', viewId);
+            console.log('Saved active tab:', viewId);
+            
             // 1. Hide all page contents with fade out
             pageContents.forEach(content => {
                 content.classList.add('hidden');
@@ -2038,12 +2042,18 @@
         /**
          * Toggles the main application view between Login and Dashboard.
          * @param {boolean} loggedIn - True to show dashboard, false to show login.
+         * @param {boolean} skipDefaultNav - If true, skips the default navigateTo('dashboard') call. Used when restoring a session.
          */
-        function toggleAppView(loggedIn) {
+        function toggleAppView(loggedIn, skipDefaultNav = false) {
             if (loggedIn) {
                 loginView.classList.add('hidden');
                 dashboardView.classList.remove('hidden');
-                navigateTo('dashboard'); // Default to dashboard home
+                
+                // Only navigate to dashboard by default, unless we're restoring a saved tab
+                if (!skipDefaultNav) {
+                    navigateTo('dashboard'); // Default to dashboard home
+                }
+                
                 // Ensure charts are initialized and updated after login
                 setTimeout(() => {
                     if (typeof window.updateMetrics === 'function' && window.allSurveyResponses) {
@@ -2096,8 +2106,8 @@
                     try { window.rbac.applyRolePermissions(); } catch (e) { console.warn('RBAC apply failed:', e); }
                 }
                 
-                // Show dashboard
-                toggleAppView(true);
+                // Show dashboard (without default navigation - we'll restore the saved tab)
+                toggleAppView(true, true);
                 
                 // Initialize real-time listeners
                 initializeRealtimeListeners();
@@ -2105,10 +2115,41 @@
                 // Protect against back button after login
                 protectAgainstBackButton();
                 
+                // Restore the last active tab (instead of defaulting to dashboard)
+                restoreLastActiveTab();
+                
                 return true;
             } catch (err) {
                 console.warn('Error restoring session:', err);
                 return false;
+            }
+        }
+
+        /**
+         * Restore the last active tab user was viewing
+         */
+        function restoreLastActiveTab() {
+            try {
+                const lastTab = sessionStorage.getItem('lastActiveTab');
+                
+                if (lastTab) {
+                    console.log('Restoring last active tab:', lastTab);
+                    // Check if the tab/view exists and user has permission to access it
+                    const tabElement = document.getElementById(lastTab);
+                    if (tabElement) {
+                        // Navigate to the last active tab
+                        navigateTo(lastTab);
+                    } else {
+                        console.warn('Last active tab not found:', lastTab, '- defaulting to dashboard');
+                        navigateTo('dashboard');
+                    }
+                } else {
+                    console.log('No last active tab found - defaulting to dashboard');
+                    navigateTo('dashboard');
+                }
+            } catch (err) {
+                console.warn('Error restoring last active tab:', err);
+                navigateTo('dashboard');
             }
         }
 
@@ -3641,7 +3682,9 @@
                     protectAgainstBackButton();
                     
                     setTimeout(() => {
-                        toggleAppView(true);
+                        toggleAppView(true, true);
+                        // Restore the last active tab they were viewing (or default to dashboard)
+                        restoreLastActiveTab();
                     }, 500);
                 } else {
                     // Show error message
