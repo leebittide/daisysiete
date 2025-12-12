@@ -2063,6 +2063,128 @@
         }
 
         /**
+         * Restore session from storage on page load
+         */
+        function restoreSessionFromStorage() {
+            try {
+                const adminUserJson = sessionStorage.getItem('adminUser');
+                if (!adminUserJson) {
+                    console.log('No saved session found');
+                    return false;
+                }
+                
+                const adminUser = JSON.parse(adminUserJson);
+                console.log('Session restored for:', adminUser.email, 'Role:', adminUser.role);
+                
+                // Update user menu with role
+                const userMenuButton = document.getElementById('userMenuButton');
+                if (userMenuButton && adminUser.role) {
+                    const roleText = adminUser.role.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                    const buttonSpan = userMenuButton.querySelector('span');
+                    if (buttonSpan) {
+                        buttonSpan.textContent = roleText;
+                    }
+                }
+                
+                // Update navbar access control
+                if (adminUser.role) {
+                    updateNavbarAccessControl(adminUser.role);
+                }
+                
+                // Apply RBAC permissions
+                if (window.rbac && typeof window.rbac.applyRolePermissions === 'function') {
+                    try { window.rbac.applyRolePermissions(); } catch (e) { console.warn('RBAC apply failed:', e); }
+                }
+                
+                // Show dashboard
+                toggleAppView(true);
+                
+                // Initialize real-time listeners
+                initializeRealtimeListeners();
+                
+                // Protect against back button after login
+                protectAgainstBackButton();
+                
+                return true;
+            } catch (err) {
+                console.warn('Error restoring session:', err);
+                return false;
+            }
+        }
+
+        /**
+         * Protect against back button navigation - terminates session and forces re-login
+         */
+        function protectAgainstBackButton() {
+            // Push a new history state to prevent back button
+            window.history.pushState(null, null, window.location.href);
+            
+            // Handle back button clicks (and forward button navigation)
+            window.onpopstate = function(event) {
+                // When user tries to go back, terminate session
+                console.warn('Back/Forward button detected - terminating session');
+                
+                // Clear session
+                sessionStorage.removeItem('adminUser');
+                sessionStorage.removeItem('adminSessionTime');
+                localStorage.clear();
+                
+                // Show logout message
+                showToast('Session terminated. Please log in again.', 'warning', 3000);
+                
+                // Show login page
+                toggleAppView(false);
+                
+                // Reset form
+                const loginForm = document.getElementById('loginForm');
+                if (loginForm) {
+                    loginForm.reset();
+                    clearLoginErrors();
+                }
+                
+                // Push another state to prevent multiple back clicks
+                window.history.pushState(null, null, window.location.href);
+                
+                // Sign out from Firebase
+                try {
+                    if (window.auth && typeof window.signOut === 'function') {
+                        window.signOut(window.auth).catch(err => console.warn('Firebase signOut error:', err));
+                    }
+                } catch (e) {
+                    console.warn('Could not sign out from Firebase:', e);
+                }
+            };
+            
+            // Also push state again to create a barrier against forward navigation
+            window.history.pushState(null, null, window.location.href);
+            
+            // Prevent keyboard shortcuts for back/forward
+            document.addEventListener('keydown', function(event) {
+                // Alt+Left Arrow = Back Button on Windows
+                if ((event.altKey && event.key === 'ArrowLeft') || 
+                    // Cmd+Left Arrow = Back Button on Mac
+                    (event.metaKey && event.key === 'ArrowLeft') ||
+                    // Alt+Right Arrow = Forward Button on Windows
+                    (event.altKey && event.key === 'ArrowRight') ||
+                    // Cmd+Right Arrow = Forward Button on Mac
+                    (event.metaKey && event.key === 'ArrowRight')) {
+                    
+                    // Prevent the default behavior
+                    event.preventDefault();
+                    
+                    // Terminate session
+                    console.warn('Keyboard back/forward navigation detected - terminating session');
+                    sessionStorage.removeItem('adminUser');
+                    sessionStorage.removeItem('adminSessionTime');
+                    localStorage.clear();
+                    
+                    showToast('Session terminated. Please log in again.', 'warning', 3000);
+                    toggleAppView(false);
+                }
+            });
+        }
+
+        /**
          * Clears all validation error messages for the Add User form.
          */
         function clearAddUserErrors() {
@@ -3515,6 +3637,9 @@
                     // Initialize real-time listeners now that user is authenticated
                     initializeRealtimeListeners();
                     
+                    // Protect against back button after successful login
+                    protectAgainstBackButton();
+                    
                     setTimeout(() => {
                         toggleAppView(true);
                     }, 500);
@@ -4157,8 +4282,13 @@
 
         // --- Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Show login view by default (do not bypass login)
-            toggleAppView(false);
+            // Check if user has an existing session
+            const hasSession = restoreSessionFromStorage();
+            
+            // If no session, show login view
+            if (!hasSession) {
+                toggleAppView(false);
+            }
             
             // Initialize survey questions from Firestore with real-time listener
             initializeSurveyQuestionsFromFirestore();
