@@ -9,7 +9,7 @@
 (function () {
   const ROLE_ALLOWED_VIEWS = {
     'super_admin': ['dashboard','raw-responses','compliance-reports','manage-questions','user-management','add-user-form'],
-    'admin': ['dashboard','user-management','manage-questions','compliance-reports','add-user-form'],
+    'admin': ['dashboard','raw-responses','compliance-reports','manage-questions','user-management','add-user-form'],
     'data_analyst': ['dashboard','raw-responses','compliance-reports'],
     'survey_manager': ['dashboard','manage-questions']
   };
@@ -29,22 +29,43 @@
     const role = admin && admin.role ? admin.role : null;
     const allowed = role && ROLE_ALLOWED_VIEWS[role] ? ROLE_ALLOWED_VIEWS[role] : [];
 
-    // Hide/show nav links
+    // Grey out/disable nav links instead of hiding them
     document.querySelectorAll('.nav-link').forEach(link => {
       const view = link.dataset.view;
       if (!view) return;
       if (!allowed.includes(view)) {
-        link.style.display = 'none';
-      } else {
+        // Grey out and disable the link
         link.style.display = '';
+        link.classList.add('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
+        link.style.opacity = '0.5';
+        link.style.cursor = 'not-allowed';
+        link.style.pointerEvents = 'none';
+      } else {
+        // Enable the link
+        link.style.display = '';
+        link.classList.remove('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
+        link.style.opacity = '1';
+        link.style.cursor = 'pointer';
+        link.style.pointerEvents = 'auto';
       }
     });
 
-    // Control Add User button visibility
+    // Control Add User button visibility (keep this greyed out too)
     const addUserBtn = document.getElementById('showAddUserBtn');
     if (addUserBtn) {
-      if (!allowed.includes('add-user-form')) addUserBtn.style.display = 'none';
-      else addUserBtn.style.display = '';
+      if (!allowed.includes('add-user-form')) {
+        addUserBtn.style.display = '';
+        addUserBtn.classList.add('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
+        addUserBtn.style.opacity = '0.5';
+        addUserBtn.style.cursor = 'not-allowed';
+        addUserBtn.style.pointerEvents = 'none';
+      } else {
+        addUserBtn.style.display = '';
+        addUserBtn.classList.remove('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
+        addUserBtn.style.opacity = '1';
+        addUserBtn.style.cursor = 'pointer';
+        addUserBtn.style.pointerEvents = 'auto';
+      }
     }
 
     // Replace header display name if present

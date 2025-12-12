@@ -392,9 +392,9 @@ export function formatSurveyForStorage(form1Data, form2Data, form3Data, form4Dat
 
     // Citizen's Charter
     citizensCharter: {
-      cc1: form2Data.cc1,
-      cc2: form2Data.cc2,
-      cc3: form2Data.cc3
+      cc1: form2Data.cc1 || '',
+      cc2: form2Data.cc2 || 'Not Applicable',
+      cc3: form2Data.cc3 || 'Not Applicable'
     },
 
     // Service Quality Dimensions (SQD)

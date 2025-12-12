@@ -15,6 +15,7 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
 // Firebase configuration from survey.html
 const firebaseConfig = {
@@ -32,6 +33,12 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Firestore
 const db = getFirestore(app);
+
+// Initialize Auth and sign in anonymously for survey users
+const auth = getAuth(app);
+signInAnonymously(auth).catch(error => {
+  console.warn('Anonymous auth failed:', error.message);
+});
 
 // Enable offline persistence for better UX
 try {
@@ -139,4 +146,4 @@ export function markSubmissionTime(clientType, email) {
   localStorage.setItem(lastSubmissionKey, Date.now().toString());
 }
 
-export { db, app };
+export { db, app, auth };

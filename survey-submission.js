@@ -51,6 +51,12 @@ function initializeSurveyQuestionsListener() {
           required: typeof data.required === 'boolean' ? data.required : true,
           order: typeof data.order === 'number' ? data.order : 0
         };
+        
+        // Include choices if they exist (for CC questions)
+        if (data.choices && Array.isArray(data.choices)) {
+          item.choices = data.choices;
+        }
+        
         all.push(item);
         if (item.type === 'SQD') {
           sqd.push(`${item.code}. ${item.text}`);
@@ -74,8 +80,8 @@ function initializeSurveyQuestionsListener() {
         try { window.renderSQDQuestions(); } catch (e) { console.warn('renderSQDQuestions error', e); }
       }
       // Also render CC questions into form-2 if present
-      if (typeof renderCCQuestions === 'function') {
-        try { renderCCQuestions(); } catch (e) { console.warn('renderCCQuestions error', e); }
+      if (typeof window.renderCCQuestions === 'function') {
+        try { window.renderCCQuestions(); } catch (e) { console.warn('renderCCQuestions error', e); }
       }
     }, (err) => {
       console.error('Question listener error:', err);
@@ -104,30 +110,41 @@ function renderCCQuestions() {
     let html = '';
     ccQuestions.forEach((q, idx) => {
       const fieldName = `cc${idx+1}`;
-      // Determine option set: index 0 -> CC1 options, index 1 -> CC2 options, else CC3-like options
+      
+      // Use choices from the question if available, otherwise use defaults
       let options = [];
-      if (idx === 0) {
-        options = [
-          { value: '1', label: 'I know what a CC is and I saw this office\'s CC' },
-          { value: '2', label: 'I know what a CC is but did NOT see this office\'s CC' },
-          { value: '3', label: 'I learned of the CC only when I saw this office\'s CC' },
-          { value: '4', label: 'I do not know what a CC is and did not see one in this office.' }
-        ];
-      } else if (idx === 1) {
-        options = [
-          { value: 'Easy to see', label: 'Easy to see' },
-          { value: 'Somewhat easy to see', label: 'Somewhat easy to see' },
-          { value: 'Difficult to see', label: 'Difficult to see' },
-          { value: 'Not visible at all', label: 'Not visible at all' },
-          { value: 'Not Applicable', label: 'Not Applicable' }
-        ];
+      
+      // First, check if question has choices stored in Firestore
+      if (q.choices && Array.isArray(q.choices) && q.choices.length > 0) {
+        // Use choices from Firestore
+        console.log(`Using Firestore choices for ${q.code}:`, q.choices);
+        options = q.choices;
       } else {
-        options = [
-          { value: 'Helped very much', label: 'Helped very much' },
-          { value: 'Somewhat helped', label: 'Somewhat helped' },
-          { value: 'Did not help', label: 'Did not help' },
-          { value: 'Not Applicable', label: 'Not Applicable' }
-        ];
+        // Only use hardcoded defaults as fallback
+        console.log(`Using hardcoded defaults for ${q.code} (index ${idx})`);
+        if (idx === 0) {
+          options = [
+            { value: '1', label: 'I know what a CC is and I saw this office\'s CC' },
+            { value: '2', label: 'I know what a CC is but did NOT see this office\'s CC' },
+            { value: '3', label: 'I learned of the CC only when I saw this office\'s CC' },
+            { value: '4', label: 'I do not know what a CC is and did not see one in this office.' }
+          ];
+        } else if (idx === 1) {
+          options = [
+            { value: 'Easy to see', label: 'Easy to see' },
+            { value: 'Somewhat easy to see', label: 'Somewhat easy to see' },
+            { value: 'Difficult to see', label: 'Difficult to see' },
+            { value: 'Not visible at all', label: 'Not visible at all' },
+            { value: 'Not Applicable', label: 'Not Applicable' }
+          ];
+        } else {
+          options = [
+            { value: 'Helped very much', label: 'Helped very much' },
+            { value: 'Somewhat helped', label: 'Somewhat helped' },
+            { value: 'Did not help', label: 'Did not help' },
+            { value: 'Not Applicable', label: 'Not Applicable' }
+          ];
+        }
       }
 
       html += `
@@ -317,7 +334,12 @@ export function validateFormAndProceed(formNumber) {
   surveyState.formData[`form${formNumber}`] = formData;
 
   // Define required fields for each form
-  const requiredFields = getRequiredFieldsForForm(formNumber);
+  let requiredFields = getRequiredFieldsForForm(formNumber);
+
+  // Special handling for Form 2 (Citizen's Charter): skip cc2, cc3 if cc1 is '4'
+  if (formNumber === 2 && formData.cc1 === '4') {
+    requiredFields = requiredFields.filter(f => f !== 'cc2' && f !== 'cc3');
+  }
 
   // Validate form
   const { valid, errors } = validateForm(formData, requiredFields);
@@ -675,8 +697,20 @@ export function handleCC1Change(value) {
     // Auto-select N/A for both
     const cc2NA = document.getElementById('cc2-na');
     const cc3NA = document.getElementById('cc3-na');
-    if (cc2NA) cc2NA.checked = true;
-    if (cc3NA) cc3NA.checked = true;
+    if (cc2NA) {
+      cc2NA.checked = true;
+      cc2NA.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    if (cc3NA) {
+      cc3NA.checked = true;
+      cc3NA.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    
+    // Clear any error messages on disabled fields
+    const cc2Error = document.getElementById('cc2-error');
+    const cc3Error = document.getElementById('cc3-error');
+    if (cc2Error) cc2Error.classList.add('hidden');
+    if (cc3Error) cc3Error.classList.add('hidden');
   } else {
     // Enable fields
     if (cc2Container) cc2Container.classList.remove('opacity-50', 'pointer-events-none');
@@ -686,3 +720,6 @@ export function handleCC1Change(value) {
 
 // Export survey state for debugging
 export { surveyState };
+
+// Expose renderCCQuestions globally so the real-time listener can call it
+window.renderCCQuestions = renderCCQuestions;
