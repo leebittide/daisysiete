@@ -51,18 +51,21 @@ const FIELD_RULES = {
   },
   serviceAvailed: {
     required: true,
+    type: 'select',
+    errorMsg: 'Please select a service availed'
+  },
+  otherService: {
+    required: false,
     type: 'text',
     minLength: 2,
     maxLength: 100,
-    errorMsg: 'Service availed must be 2-100 characters',
-    pattern: 'alphanumeric'
+    errorMsg: 'Please specify the other service (2-100 characters)',
+    conditionalRequired: (formData) => formData.serviceAvailed === 'Other'
   },
   regionOfResidence: {
     required: true,
-    type: 'text',
-    minLength: 2,
-    maxLength: 100,
-    errorMsg: 'Region must be 2-100 characters'
+    type: 'select',
+    errorMsg: 'Please select a region of residence'
   },
   sex: {
     required: true,

@@ -71,7 +71,7 @@
                     </label>
                     <label class="block">
                         <span class="text-gray-700">Date <span class="text-red-500">*</span></span>
-                        <input type="date" name="date" value="2025-10-12" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" required>
+                        <input type="date" name="date" id="date-input" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" required>
                         <p id="date-error" class="text-red-500 text-xs mt-1 hidden"></p>
                     </label>
                 </div>
@@ -83,14 +83,50 @@
                     </label>
                     <label class="block">
                         <span class="text-gray-700">Service Availed <span class="text-red-500">*</span></span>
-                        <input type="text" name="serviceAvailed" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" required>
+                        <select name="serviceAvailed" id="serviceAvailed-select" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" required onchange="handleServiceChange()">
+                            <option value="" disabled selected>Select Service Availed</option>
+                            <option value="Notary">Notary</option>
+                            <option value="Birth Certificate Issuance">Birth Certificate Issuance</option>
+                            <option value="Marriage License">Marriage License</option>
+                            <option value="Business Permit">Business Permit</option>
+                            <option value="Building Permit">Building Permit</option>
+                            <option value="Property Assessment">Property Assessment</option>
+                            <option value="Tax Payment">Tax Payment</option>
+                            <option value="Barangay Clearance">Barangay Clearance</option>
+                            <option value="ID Processing">ID Processing</option>
+                            <option value="Other">Other/s</option>
+                        </select>
                         <p id="serviceAvailed-error" class="text-red-500 text-xs mt-1 hidden"></p>
                     </label>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="block" id="otherServiceContainer" style="display: none;">
+                        <span class="text-gray-700">Please specify other service <span class="text-red-500">*</span></span>
+                        <input type="text" name="otherService" id="otherService-input" placeholder="specify the service you availed" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        <p id="otherService-error" class="text-red-500 text-xs mt-1 hidden"></p>
+                    </label>
                     <label class="block">
                         <span class="text-gray-700">Region of Residence <span class="text-red-500">*</span></span>
-                        <input type="text" name="regionOfResidence" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" required>
+                        <select name="regionOfResidence" id="regionOfResidence-select" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" required>
+                            <option value="" disabled selected>Select Region of Residence</option>
+                            <option value="National Capital Region (NCR)">National Capital Region (NCR)</option>
+                            <option value="Cordillera Administrative Region (CAR)">Cordillera Administrative Region (CAR)</option>
+                            <option value="Ilocos Region (Region I)">Ilocos Region (Region I)</option>
+                            <option value="Cagayan Valley (Region II)">Cagayan Valley (Region II)</option>
+                            <option value="Central Luzon (Region III)">Central Luzon (Region III)</option>
+                            <option value="CALABARZON (Region IV-A)">CALABARZON (Region IV-A)</option>
+                            <option value="Mimaropa (Region IV-B)">Mimaropa (Region IV-B)</option>
+                            <option value="Bicol Region (Region V)">Bicol Region (Region V)</option>
+                            <option value="Western Visayas (Region VI)">Western Visayas (Region VI)</option>
+                            <option value="Central Visayas (Region VII)">Central Visayas (Region VII)</option>
+                            <option value="Eastern Visayas (Region VIII)">Eastern Visayas (Region VIII)</option>
+                            <option value="Zamboanga Peninsula (Region IX)">Zamboanga Peninsula (Region IX)</option>
+                            <option value="Northern Mindanao (Region X)">Northern Mindanao (Region X)</option>
+                            <option value="Davao Region (Region XI)">Davao Region (Region XI)</option>
+                            <option value="Soccsksargen (Region XII)">Soccsksargen (Region XII)</option>
+                            <option value="Caraga (Region XIII)">Caraga (Region XIII)</option>
+                            <option value="Bangsamoro Autonomous Region in Muslim Mindanao (BARMM)">Bangsamoro Autonomous Region in Muslim Mindanao (BARMM)</option>
+                        </select>
                         <p id="regionOfResidence-error" class="text-red-500 text-xs mt-1 hidden"></p>
                     </label>
                     <div class="block">
@@ -322,6 +358,14 @@
         document.addEventListener('DOMContentLoaded', () => {
             initializeSurveyHandlers();
 
+            // Set current date as default and restrict future dates
+            const dateInput = document.getElementById('date-input');
+            if (dateInput) {
+                const today = new Date().toISOString().split('T')[0];
+                dateInput.value = today;
+                dateInput.max = today;
+            }
+
             // Show form 1 by default
             document.getElementById('form-1').classList.remove('hidden');
             updateProgressBar();
@@ -380,6 +424,24 @@
         };
 
         window.handleCC1Change = handleCC1Change;
+
+        // Handler for Service Availed dropdown - show/hide "Other" text field
+        window.handleServiceChange = function() {
+            const serviceSelect = document.getElementById('serviceAvailed-select');
+            const otherServiceContainer = document.getElementById('otherServiceContainer');
+            const otherServiceInput = document.getElementById('otherService-input');
+            
+            if (serviceSelect && otherServiceContainer && otherServiceInput) {
+                if (serviceSelect.value === 'Other') {
+                    otherServiceContainer.style.display = 'block';
+                    otherServiceInput.required = true;
+                } else {
+                    otherServiceContainer.style.display = 'none';
+                    otherServiceInput.required = false;
+                    otherServiceInput.value = '';
+                }
+            }
+        };
 
         // Progress bar updater
         function updateProgressBar() {

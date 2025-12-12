@@ -2247,6 +2247,7 @@
             const lastName = document.getElementById('lastName');
             const userEmail = document.getElementById('userEmail');
             const userRole = document.getElementById('userRole');
+            // Email regex supports all valid email providers: Gmail, Outlook, Yahoo, corporate domains, etc.
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             if (firstName.value.trim() === '') {
@@ -3713,6 +3714,7 @@
         });
 
         // Helper function to validate email format
+        // Accepts all valid email providers: Gmail, Outlook, Yahoo, corporate domains, etc.
         function isValidEmail(email) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailRegex.test(email);
