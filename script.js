@@ -183,6 +183,15 @@ function renderSQDQuestions() {
       .mood-label { min-height: 40px; text-align: center; font-size: 12px; margin-top: 6px; line-height: 1.1; white-space: normal; }
       .mood-icon.selected { outline: 2px solid #2563eb; box-shadow: 0 0 15px rgba(37,99,235,0.6), 0 4px 10px rgba(37,99,235,0.3); background-color: rgba(37,99,235,0.1); }
       .form-section.error { border: 2px solid #ef4444; }
+      
+      /* Mobile responsiveness for 375px and below */
+      @media (max-width: 375px) {
+        .mood-grid { gap: 0.25rem; }
+        .mood-option { width: 60px; }
+        .mood-icon { height: 44px; width: 44px; }
+        .mood-icon img { max-width: 36px; max-height: 36px; }
+        .mood-label { min-height: 32px; font-size: 10px; margin-top: 4px; }
+      }
     `;
     document.head.appendChild(style);
   }
